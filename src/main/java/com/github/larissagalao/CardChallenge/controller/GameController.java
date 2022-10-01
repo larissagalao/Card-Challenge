@@ -6,6 +6,7 @@ import com.github.larissagalao.CardChallenge.model.repository.GameRepository;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
@@ -184,6 +185,24 @@ public class GameController {
         }else{
             return playerName + " | Score: " + score;
         }
+    }
+
+    @GetMapping("/ui")
+    public String UI(Model model){
+
+        String s = dropCards();
+        Map<String, List<Integer>> map = separatedCards(getValues(s));
+
+        saveGame(map, winner(map));
+
+
+        model.addAttribute("playerOne", getCards(map.get("Player One")));
+        model.addAttribute("playerTwo", getCards(map.get("Player Two")));
+        model.addAttribute("playerThree", getCards(map.get("Player Three")));
+        model.addAttribute("playerFour", getCards(map.get("Player Four")));
+        model.addAttribute("winnerFormat", winnerFormat(winner(map)));
+
+        return "uiFile";
     }
 
     @PostMapping

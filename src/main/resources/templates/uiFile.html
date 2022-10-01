@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<table>
+    <tr>
+        <th>Player</th>
+        <th>Cards</th>
+    </tr>
+    <tr>
+        <td>Player One</td>
+        <td th:text="${playerOne}"></td>
+    </tr>
+    <tr>
+        <td>Player Two</td>
+        <td th:text="${playerTwo}"></td>
+    </tr>
+    <tr>
+        <td>Player Three</td>
+        <td th:text="${playerThree}"></td>
+    </tr>
+    <tr>
+        <td>Player Four</td>
+        <td th:text="${playerFour}"></td>
+    </tr>
+</table>
+
+<p th:text="${winnerFormat}"></p>
+
+<a href=http://localhost:8080/ui><button>Play Again</button></a>" +
+<a style='margin-left: 5px;' href=http://localhost:8080/winnerTable><button>Table</button></a>" +
+<a style='margin-left: 5px;' href=http://localhost:8080><button>Restart</button></a>" ;
+
+
+</body>
+</html>
