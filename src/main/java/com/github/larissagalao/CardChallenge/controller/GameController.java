@@ -5,6 +5,7 @@ import com.github.larissagalao.CardChallenge.model.repository.GameRepository;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -117,10 +118,20 @@ public class GameController {
 
         return cards;
     }
-    
+
     public JSONObject StringToJsonObject(String s){
         JSONObject jsonObject = new JSONObject(s);
         return jsonObject;
+    }
+
+    @GetMapping()
+    public String Restart(){
+
+        started = false;
+        gameRepository.deleteAll();
+
+        return "restartButton";
+
     }
 
 
