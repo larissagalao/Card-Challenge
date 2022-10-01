@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class GameController {
@@ -105,6 +102,22 @@ public class GameController {
 
     }
 
+    public List<String> getCards(List<Integer> value){
+
+        List<String> cards = new ArrayList<String>();
+
+        for(int i = 0; i < value.size(); i++){
+            cards.add(value.get(i).toString());
+        }
+
+        Collections.replaceAll(cards, "1", "A");
+        Collections.replaceAll(cards, "11", "J");
+        Collections.replaceAll(cards, "12", "Q");
+        Collections.replaceAll(cards, "13", "K");
+
+        return cards;
+    }
+    
     public JSONObject StringToJsonObject(String s){
         JSONObject jsonObject = new JSONObject(s);
         return jsonObject;
