@@ -1,11 +1,13 @@
 package com.github.larissagalao.CardChallenge.controller;
 
 import com.github.larissagalao.CardChallenge.model.entity.Deck;
+import com.github.larissagalao.CardChallenge.model.entity.Game;
 import com.github.larissagalao.CardChallenge.model.repository.GameRepository;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -183,5 +185,36 @@ public class GameController {
             return playerName + " | Score: " + score;
         }
     }
-    
+
+    @PostMapping
+    public Game saveGame(Map<String, List<Integer>> cards, Map<String, Integer> win){
+
+        try{
+
+            Game round = new Game();
+            Integer score = 0;
+            String playerName = null;
+
+            for(String player : win.keySet()){
+                score = win.get(player);
+                playerName = player;
+            }
+
+            round.setPlayerOneCards(cards.get("Player One").toString());
+            round.setPlayerTwoCards(cards.get("Player Two").toString());
+            round.setPlayerThreeCards(cards.get("Player Three").toString());
+            round.setPlayerFourCards(cards.get("Player Four").toString());
+            round.setWinner(playerName);
+            round.setWinnerScore(score);
+
+            return gameRepository.save(round);
+
+        }catch (Exception e){
+
+            return null;
+
+        }
+    }
+
+
 }
