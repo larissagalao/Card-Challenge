@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 public class GameController {
 
@@ -32,6 +35,39 @@ public class GameController {
 
         return deck;
     }
+
+    public String dropCards() {
+        if (started == true) {
+
+            String deckId = deck.getDeck_id();
+
+            List<Object> list = new ArrayList<Object>();
+
+
+            String url = "https://deckofcardsapi.com/api/deck/" + deckId + "/draw/?count=20";
+            RestTemplate restTemplate = new RestTemplate();
+            String objects = restTemplate.getForObject(url, String.class);
+
+
+            String cardsString = StringToJsonObject(objects).toString();
+
+            deck.setRemaining(StringToJsonObject(objects).get("remaining").toString());
+
+            if(Integer.parseInt(deck.getRemaining()) <= 32) {
+                url = "https://deckofcardsapi.com/api/deck/" + deckId + "/shuffle/";
+                objects = restTemplate.getForObject(url, String.class);
+                deck.setRemaining(StringToJsonObject(objects).get("remaining").toString());
+            }
+
+            return cardsString;
+
+        } else {
+
+            startTheGame();
+            return dropCards();
+        }
+    }
+
 
     public JSONObject StringToJsonObject(String s){
         JSONObject jsonObject = new JSONObject(s);
