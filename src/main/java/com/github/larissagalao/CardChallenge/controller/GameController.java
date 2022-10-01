@@ -134,7 +134,54 @@ public class GameController {
 
     }
 
+    public Map<String, Integer> winner(Map<String, List<Integer>> map) {
 
+        Map<String, Integer> winnerMap = new HashMap<String, Integer>();
 
+        String winner = null;
+        Integer winnerScore = 0;
+        Boolean tie = false;
+        Integer score;
 
+        for (String player : map.keySet()) {
+            score = 0;
+            for (int i = 0; i < map.get(player).size(); i++) {
+                score += map.get(player).get(i);
+            }
+            if (score > winnerScore) {
+                winner = player;
+                winnerScore = score;
+                tie = false;
+            } else if (score == winnerScore) {
+                tie = true;
+                winnerScore = score;
+            }
+        }
+
+        if(tie == true){
+            winnerMap.put("Tie", winnerScore);
+            return winnerMap;
+        }else{
+            winnerMap.put(winner, winnerScore);
+            return winnerMap;
+        }
+    }
+
+    public String winnerFormat(Map<String, Integer> winner){
+
+        Integer score = 0;
+        String playerName = null;
+
+        for(String player : winner.keySet()){
+            score = winner.get(player);
+            playerName = player;
+        }
+
+        if(playerName != "Tie"){
+            return "Winner: " + playerName + " | Score: " + score;
+        }else{
+            return playerName + " | Score: " + score;
+        }
+    }
+    
 }
