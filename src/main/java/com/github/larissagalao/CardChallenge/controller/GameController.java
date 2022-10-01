@@ -205,6 +205,32 @@ public class GameController {
         return "uiFile";
     }
 
+    @GetMapping("/winnerTable")
+    public String winnerTable(Model model){
+
+        model.addAttribute("playerOne", mapTable().get("Player One"));
+        model.addAttribute("playerTwo", mapTable().get("Player Two"));
+        model.addAttribute("playerThree", mapTable().get("Player Three"));
+        model.addAttribute("playerFour", mapTable().get("Player Four"));
+
+        return  "winnerTable";
+
+    }
+
+    public Map<String, Integer> mapTable(){
+
+
+        Map<String, Integer> map = new HashMap<String, Integer>();
+
+        map.put("Player One", gameRepository.table("Player One"));
+        map.put("Player Two", gameRepository.table("Player Two"));
+        map.put("Player Three", gameRepository.table("Player Three"));
+        map.put("Player Four", gameRepository.table("Player Four"));
+
+
+        return map;
+    }
+
     @PostMapping
     public Game saveGame(Map<String, List<Integer>> cards, Map<String, Integer> win){
 
