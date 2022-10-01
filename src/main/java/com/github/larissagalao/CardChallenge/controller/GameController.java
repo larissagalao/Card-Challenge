@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class GameController {
@@ -68,6 +70,40 @@ public class GameController {
         }
     }
 
+    public List<Integer> getValues(String cardsString){
+
+        List<Integer> values = new ArrayList<Integer>();
+
+        cardsString= cardsString.substring(cardsString.indexOf("["));
+        cardsString = cardsString.substring(1, cardsString.indexOf("]"));
+
+        String s3 = cardsString.replace("},{", "};{");
+        s3 = s3.replace("ACE", "1");
+        s3 = s3.replace("JACK", "11");
+        s3 = s3.replace("QUEEN", "12");
+        s3 = s3.replace("KING", "13");
+        String[] json = s3.split(";");
+
+        for(int i = 0; i< 20; i++){
+            Object obj = StringToJsonObject(json[i]).get("value");
+            values.add(Integer.parseInt(obj.toString()));
+        }
+        return values;
+    }
+
+    public Map<String, List<Integer>> separatedCards(List<Integer> cards){
+
+        Map<String, List<Integer>> mapCards = new HashMap<String, List<Integer>>();
+
+
+        mapCards.put("Player One", cards.subList(0,5));
+        mapCards.put("Player Two", cards.subList(5,10));
+        mapCards.put("Player Three", cards.subList(10,15));
+        mapCards.put("Player Four", cards.subList(15,20));
+
+        return mapCards;
+
+    }
 
     public JSONObject StringToJsonObject(String s){
         JSONObject jsonObject = new JSONObject(s);
