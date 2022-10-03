@@ -6,6 +6,8 @@ public class Deck {
 
     private String remaining;
 
+    private Boolean started;
+
     public String getDeck_id() {
         return deck_id;
     }
@@ -22,4 +24,11 @@ public class Deck {
         this.remaining = remaining;
     }
 
+    public Boolean getStarted() {
+        return started;
+    }
+
+    public void setStarted(Boolean started) {
+        this.started = started;
+    }
 }

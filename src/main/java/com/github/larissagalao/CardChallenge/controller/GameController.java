@@ -18,8 +18,6 @@ public class GameController {
 
     private Deck deck;
 
-    private Boolean started = false;
-
     @Autowired
     GameRepository gameRepository;
 
@@ -33,14 +31,13 @@ public class GameController {
 
         deck.setDeck_id(StringToJsonObject(obj).get("deck_id").toString());
         deck.setRemaining(StringToJsonObject(obj).get("remaining").toString());
-
-        started = true;
+        deck.setStarted(true);
 
         return deck;
     }
 
     public String dropCards() {
-        if (started == true) {
+        if (deck.getStarted() == true) {
 
             String deckId = deck.getDeck_id();
 
@@ -130,8 +127,12 @@ public class GameController {
     @GetMapping()
     public String Restart(){
 
-        started = false;
-        gameRepository.deleteAll();
+        try{
+            deck.setStarted(false);
+            gameRepository.deleteAll();
+        }catch (NullPointerException e){
+            startTheGame();
+        }
 
         return "restartButton";
 
